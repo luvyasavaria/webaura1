@@ -131,7 +131,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[
               { title: 'Is it Tuesday yet?', category: 'Web Application', img: '/isittuesdayyet.png', url: 'https://isittuesdayyet.netlify.app/' },
-              { title: 'Doneify', category: 'Productivity Tool', img: '/doneify.png', url: 'https://luvyasavaria.github.io/doneify/' },
+              { title: 'Doneify', category: 'Productivity Tool', img: '/doneify-project.png', url: 'https://luvyasavaria.github.io/doneify/' },
             ].map((project, i) => (
               <motion.a
                 key={i}
