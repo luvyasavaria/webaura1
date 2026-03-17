@@ -21,7 +21,6 @@ export default function Home() {
             muted
             playsInline
             preload="auto"
-            poster="/isittuesdayyet.png"
             className="w-full h-full object-cover opacity-70"
           >
             <source src="/landingpagevid.mp4" type="video/mp4" />
