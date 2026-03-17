@@ -13,7 +13,7 @@ const projects = [
     title: 'Doneify',
     category: 'Productivity Tool',
     description: 'A premium productivity platform designed for high-performance teams.',
-    image: '/doneify.png',
+    image: '/doneify-project.png',
     url: 'https://luvyasavaria.github.io/doneify/'
   }
 ];
