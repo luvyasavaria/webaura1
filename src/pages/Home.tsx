@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, Star } from 'lucide-react';
+import { ArrowRight, Star } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -90,7 +90,17 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Spotlight effect cards */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            onMouseLeave={(e) => {
+              const cards = e.currentTarget.querySelectorAll<HTMLElement>('.expertise-card');
+              cards.forEach(card => {
+                card.style.filter = 'blur(0px)';
+                card.style.opacity = '1';
+              });
+            }}
+          >
             {[
               { title: 'Website Design', desc: 'Bespoke designs tailored to your brand identity.' },
               { title: 'UI/UX Design', desc: 'Intuitive interfaces focused on user experience.' },
@@ -100,7 +110,22 @@ export default function Home() {
                 key={i}
                 {...fadeInUp}
                 transition={{ delay: i * 0.1 }}
-                className="p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group"
+                className="expertise-card p-10 rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 group"
+                style={{ transition: 'filter 0.3s ease, opacity 0.3s ease, background 0.3s ease' }}
+                onMouseEnter={(e) => {
+                  const parent = e.currentTarget.parentElement;
+                  if (!parent) return;
+                  const cards = parent.querySelectorAll<HTMLElement>('.expertise-card');
+                  cards.forEach(card => {
+                    if (card !== e.currentTarget) {
+                      card.style.filter = 'blur(3px)';
+                      card.style.opacity = '0.4';
+                    } else {
+                      card.style.filter = 'blur(0px)';
+                      card.style.opacity = '1';
+                    }
+                  });
+                }}
               >
                 <h3 className="text-xl font-bold mb-4 group-hover:text-white transition-colors">{service.title}</h3>
                 <p className="text-white/50 leading-relaxed">{service.desc}</p>
@@ -177,7 +202,7 @@ export default function Home() {
                 className="p-10 rounded-3xl border border-white/10 bg-white/[0.02]"
               >
                 <div className="flex gap-1 mb-6 text-yellow-500">
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                  {[...Array(5)].map((_, j) => <Star key={j} size={16} fill="currentColor" />)}
                 </div>
                 <p className="text-white/70 italic mb-8 leading-relaxed">"{testimonial.text}"</p>
                 <div>
