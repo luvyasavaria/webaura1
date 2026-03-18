@@ -9,7 +9,7 @@ export default function Footer() {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0 opacity-30"
+        className="absolute inset-0 w-full h-full object-cover z-0 opacity-70"
       >
         <source src="/moon.mp4" type="video/mp4" />
       </video>
