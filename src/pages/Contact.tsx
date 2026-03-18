@@ -46,7 +46,7 @@ export default function Contact() {
             className="bg-white/[0.03] border border-white/10 p-8 md:p-16 rounded-[2rem] md:rounded-[3rem]"
           >
             <form 
-              action="https://formspree.io/f/4aac337c9937431498e2ddf5b9aade72" 
+              action="https://formspree.io/f/xdawyeaj" 
               method="POST"
               className="space-y-8"
             >
