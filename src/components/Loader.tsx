@@ -5,8 +5,8 @@ export default function Loader({ onDone }: { onDone: () => void }) {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFading(true), 2500);
-    const doneTimer = setTimeout(() => onDone(), 3200);
+    const fadeTimer = setTimeout(() => setFading(true), 3500);
+const doneTimer = setTimeout(() => onDone(), 4000);
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(doneTimer);
