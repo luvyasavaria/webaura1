@@ -42,41 +42,84 @@ function ServiceCard({ service, index, total, scrollYProgress }: {
   scrollYProgress: any;
 }) {
   const start = index / total;
+  const mid = (index + 0.5) / total;
   const end = (index + 1) / total;
 
-  // Each card slides in from right and exits to the left
-  const x = useTransform(
+  // Incoming: rotates from +90deg to 0deg (flips in from front)
+  // Outgoing: rotates from 0deg to -90deg (flips out to back)
+  const rotateY = useTransform(
     scrollYProgress,
-    [Math.max(0, start - 1 / total), start, end, Math.min(1, end + 1 / total)],
-    ['100%', '0%', '0%', '-100%']
+    [Math.max(0, start - 1 / total), start, mid, end],
+    [90, 0, 0, -90]
   );
 
   const opacity = useTransform(
     scrollYProgress,
-    [Math.max(0, start - 1 / total), start, end, Math.min(1, end + 1 / total)],
+    [Math.max(0, start - 1 / total), start, mid, end],
     [0, 1, 1, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [Math.max(0, start - 1 / total), start, end, Math.min(1, end + 1 / total)],
-    [0.85, 1, 1, 0.85]
+    [Math.max(0, start - 1 / total), start, mid, end],
+    [0.7, 1, 1, 0.7]
+  );
+
+  const z = useTransform(
+    scrollYProgress,
+    [Math.max(0, start - 1 / total), start, mid, end],
+    [-200, 0, 0, -200]
   );
 
   return (
     <motion.div
-      style={{ x, opacity, scale }}
+      style={{
+        rotateY,
+        opacity,
+        scale,
+        z,
+        transformStyle: 'preserve-3d',
+      }}
       className="absolute inset-0 flex items-center justify-center px-6"
     >
-      <div className="w-full max-w-2xl p-10 md:p-16 rounded-[2rem] md:rounded-3xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] transition-all group">
-        <div className="text-white mb-8 group-hover:scale-110 transition-transform origin-left">
-          {service.icon}
+      <div className="w-full max-w-2xl">
+        {/* Card front face */}
+        <div className="relative p-10 md:p-16 rounded-[2rem] md:rounded-3xl border border-white/10 overflow-hidden group"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+            boxShadow: '0 0 80px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.1)',
+          }}
+        >
+          {/* Glowing orb behind card */}
+          <div
+            className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3), transparent)' }}
+          />
+
+          {/* Index number */}
+          <div className="text-white/10 text-8xl font-black absolute top-6 right-8 select-none leading-none">
+            {String(index + 1).padStart(2, '0')}
+          </div>
+
+          {/* Icon */}
+          <div className="text-white mb-8 group-hover:scale-110 transition-transform origin-left relative z-10">
+            {service.icon}
+          </div>
+
+          {/* Counter */}
+          <div className="text-white/30 text-xs uppercase tracking-widest mb-4 font-bold relative z-10">
+            {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </div>
+
+          {/* Title */}
+          <h3 className="text-3xl md:text-5xl font-bold mb-6 relative z-10">{service.title}</h3>
+
+          {/* Description */}
+          <p className="text-white/50 text-lg leading-relaxed relative z-10 max-w-lg">{service.description}</p>
+
+          {/* Bottom line accent */}
+          <div className="mt-10 h-px w-full bg-gradient-to-r from-white/20 via-white/5 to-transparent relative z-10" />
         </div>
-        <div className="text-white/30 text-sm uppercase tracking-widest mb-4 font-bold">
-          {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-        </div>
-        <h3 className="text-3xl md:text-4xl font-bold mb-6">{service.title}</h3>
-        <p className="text-white/50 text-lg leading-relaxed">{service.description}</p>
       </div>
     </motion.div>
   );
@@ -92,7 +135,7 @@ export default function Services() {
 
   return (
     <div className="bg-black">
-      {/* Header — scrolls normally */}
+      {/* Header */}
       <div className="pt-32 pb-16 px-6 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -106,34 +149,61 @@ export default function Services() {
         </motion.div>
       </div>
 
-      {/* Scroll hijack section */}
+      {/* 3D Flip scroll section */}
       <div
         ref={containerRef}
         style={{ height: `${services.length * 100}vh` }}
       >
-        {/* Sticky viewport */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+        <div
+          className="sticky top-0 h-screen w-full overflow-hidden flex items-center"
+          style={{ perspective: '1200px' }}
+        >
 
-          {/* Progress dots */}
-          <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-10">
+          {/* Progress bar — left side */}
+          <div className="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-10">
             {services.map((_, i) => {
-              const dotProgress = useTransform(
+              const active = useTransform(
                 scrollYProgress,
                 [(i / services.length), ((i + 0.5) / services.length)],
-                [0, 1]
+                [0.2, 1]
               );
               return (
                 <motion.div
                   key={i}
-                  style={{ scaleY: dotProgress }}
-                  className="w-1 h-6 bg-white rounded-full origin-top opacity-40"
+                  style={{ opacity: active }}
+                  className="w-1 h-8 bg-white rounded-full"
                 />
               );
             })}
           </div>
 
+          {/* Service name indicator — bottom center */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+            {services.map((service, i) => {
+              const op = useTransform(
+                scrollYProgress,
+                [
+                  Math.max(0, (i / services.length) - 0.05),
+                  i / services.length,
+                  (i + 0.8) / services.length,
+                  (i + 1) / services.length
+                ],
+                [0, 1, 1, 0]
+              );
+              return (
+                <motion.p
+                  key={i}
+                  style={{ opacity: op, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}
+                  className="text-white/30 text-sm uppercase tracking-widest whitespace-nowrap font-bold"
+                >
+                  {service.title}
+                </motion.p>
+              );
+            })}
+          </div>
+
           {/* Cards */}
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
             {services.map((service, i) => (
               <ServiceCard
                 key={i}
@@ -144,6 +214,7 @@ export default function Services() {
               />
             ))}
           </div>
+
         </div>
       </div>
     </div>
