@@ -43,67 +43,84 @@ export default function Contact() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/[0.03] border border-white/10 p-8 md:p-16 rounded-[2rem] md:rounded-[3rem]"
+            className="relative overflow-hidden border border-white/10 p-8 md:p-16 rounded-[2rem] md:rounded-[3rem]"
           >
-            <form 
-              action="https://formspree.io/f/xdawyeaj" 
-              method="POST"
-              className="space-y-8"
+            {/* Video Background */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-0"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    placeholder="John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors"
-                  />
-                </div>
-                <div className="space-y-3">
-                  <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="john@example.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors"
-                  />
-                </div>
-              </div>
+              <source src="/bgform.mp4" type="video/mp4" />
+            </video>
 
-              <div className="space-y-3">
-                <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Project Type</label>
-                <select 
-                  name="projectType"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-white/40 transition-colors appearance-none"
-                >
-                  <option className="bg-black">Website Design</option>
-                  <option className="bg-black">UI/UX Design</option>
-                  <option className="bg-black">E-commerce</option>
-                  <option className="bg-black">Custom Project</option>
-                </select>
-              </div>
+            {/* Dark overlay for readability */}
+            <div className="absolute inset-0 bg-black/60 z-10" />
 
-              <div className="space-y-3">
-                <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Message</label>
-                <textarea
-                  name="message"
-                  required
-                  rows={5}
-                  placeholder="Tell us about your project..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
-                />
-              </div>
-
-              <button 
-                type="submit"
-                className="w-full py-5 bg-white text-black font-bold rounded-2xl flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform"
+            {/* Form content */}
+            <div className="relative z-20">
+              <form
+                action="https://formspree.io/f/xdawyeaj"
+                method="POST"
+                className="space-y-8"
               >
-                Send Message <Send size={18} />
-              </button>
-            </form>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      placeholder="John Doe"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      placeholder="john@example.com"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Project Type</label>
+                  <select
+                    name="projectType"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-white/40 transition-colors appearance-none"
+                  >
+                    <option className="bg-black">Website Design</option>
+                    <option className="bg-black">UI/UX Design</option>
+                    <option className="bg-black">E-commerce</option>
+                    <option className="bg-black">Custom Project</option>
+                  </select>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs uppercase tracking-widest text-white/40 font-bold ml-1">Message</label>
+                  <textarea
+                    name="message"
+                    required
+                    rows={5}
+                    placeholder="Tell us about your project..."
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-5 bg-white text-black font-bold rounded-2xl flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform"
+                >
+                  Send Message <Send size={18} />
+                </button>
+              </form>
+            </div>
           </motion.div>
         </div>
       </div>
